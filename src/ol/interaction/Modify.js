@@ -952,7 +952,7 @@ class Modify extends PointerInteraction {
    * @return {boolean} If the event was consumed.
    */
   handleDownEvent(evt) {
-    if (!this.condition_(evt)) {
+    if (!this.condition_(evt) && !this.deleteCondition_(evt)) {
       return false;
     }
     const pixelCoordinate = evt.coordinate;
