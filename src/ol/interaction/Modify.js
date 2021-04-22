@@ -1129,7 +1129,7 @@ class Modify extends PointerInteraction {
     let nodes, hitPointGeometry;
     if (this.hitDetection_) {
       const layerFilter =
-        typeof this.hitDetection_ === 'object'
+        typeof this.hitDetection_ === 'function'
           ? (layer) => layer === this.hitDetection_
           : undefined;
       map.forEachFeatureAtPixel(
