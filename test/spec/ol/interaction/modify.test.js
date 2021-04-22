@@ -213,6 +213,24 @@ describe('ol.interaction.Modify', function () {
       const modify = new Modify({source: source, snapToPointer: true});
       expect(modify.snapToPointer_).to.be(true);
     });
+    it('uses function provided with hitDetection', function () {
+      function layerFilter() {}
+      const modify = new Modify({
+        features: new Collection(),
+        hitDetection: layerFilter,
+      });
+      const mockMap = {
+        getCoordinateFromPixel: (pixel) => [0, 0],
+        forEachFeatureAtPixel: sinon.spy(),
+      };
+      modify.handlePointerAtPixel_([0, 0], mockMap);
+      expect(mockMap.forEachFeatureAtPixel.callCount).to.be(1);
+      expect(mockMap.forEachFeatureAtPixel.args.length).to.be(3);
+      expect(mockMap.forEachFeatureAtPixel.args[2]).to.be.a(Object);
+      expect(mockMap.forEachFeatureAtPixel.args[2].layerFilter).to.be(
+        layerFilter
+      );
+    });
   });
 
   describe('vertex deletion', function () {
