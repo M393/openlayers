@@ -368,8 +368,11 @@ class TileSource extends Source {
    * @param {number} x Tile coordinate x.
    * @param {number} y Tile coordinate y.
    * @param {import("../proj/Projection.js").default} projection Projection.
+   * @return {boolean} True when the tile is cached.
    */
-  useTile(z, x, y, projection) {}
+  useTile(z, x, y, projection) {
+    return false;
+  }
 }
 
 /**

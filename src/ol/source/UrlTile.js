@@ -219,12 +219,15 @@ class UrlTile extends TileSource {
    * @param {number} z Tile coordinate z.
    * @param {number} x Tile coordinate x.
    * @param {number} y Tile coordinate y.
+   * @return {boolean} True when the tile is cached.
    */
   useTile(z, x, y) {
     const tileCoordKey = getKeyZXY(z, x, y);
-    if (this.tileCache.containsKey(tileCoordKey)) {
-      this.tileCache.get(tileCoordKey);
+    if (!this.tileCache.containsKey(tileCoordKey)) {
+      return false;
     }
+    this.tileCache.get(tileCoordKey);
+    return true;
   }
 }
 

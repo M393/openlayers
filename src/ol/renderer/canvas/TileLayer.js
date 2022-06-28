@@ -736,7 +736,9 @@ class CanvasTileLayerRenderer extends CanvasLayerRenderer {
               opt_tileCallback(tile);
             }
           } else {
-            tileSource.useTile(z, x, y, projection);
+            if (tileSource.useTile(z, x, y, projection)) {
+              ++tileCount;
+            }
           }
         }
       }
