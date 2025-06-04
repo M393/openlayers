@@ -5,8 +5,9 @@ import View from '../View.js';
 import {assert} from '../asserts.js';
 import EventType from '../events/EventType.js';
 import {listen, unlistenByKey} from '../events.js';
-import {intersects} from '../extent.js';
+import {getIntersection, intersects} from '../extent.js';
 import RenderEventType from '../render/EventType.js';
+import {Tile} from '../source.js';
 import BaseLayer from './Base.js';
 import LayerProperty from './Property.js';
 
@@ -325,13 +326,22 @@ class Layer extends BaseLayer {
     } else {
       layerState = this.getLayerState();
     }
+    if (!inView(layerState, frameState.viewState)) {
+      return false;
+    }
 
-    const layerExtent = this.getExtent();
+    const source = this.getSource();
+    const sourceExtent =
+      source instanceof Tile ? source.getTileGrid()?.getExtent() : null;
 
-    return (
-      inView(layerState, frameState.viewState) &&
-      (!layerExtent || intersects(layerExtent, frameState.extent))
-    );
+    let layerExtent = this.getExtent();
+    if (layerExtent && sourceExtent) {
+      layerExtent = getIntersection(layerExtent, sourceExtent);
+    } else if (sourceExtent) {
+      layerExtent = sourceExtent;
+    }
+
+    return !layerExtent || intersects(layerExtent, frameState.extent);
   }
 
   /**
