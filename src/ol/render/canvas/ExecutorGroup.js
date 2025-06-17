@@ -220,7 +220,7 @@ class ExecutorGroup {
         contextSize,
         contextSize,
         undefined,
-        {willReadFrequently: false},
+        {willReadFrequently: true},
       );
     }
     const context = this.hitDetectionContext_;
